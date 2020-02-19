@@ -173,3 +173,9 @@ order.html =>
     - add {{ pizzaform }}
 
 # - create forms.py + PizzaForm & update views.py and order.html
+
+- create [setup_data] branch
+  ▶
+  git checkout setup_data
+
+# - git checkout setup_data
