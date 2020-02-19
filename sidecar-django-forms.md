@@ -39,3 +39,11 @@ pip install django
 ▶ django-admin startproject nandiasgarden
 
 # - create project + folder
+
+▶ mv nandiasgarden/ projectnandiasgarden
+(tutorial says nandiasgarden-project but "name-project" is an invalid proj name in py 3.8)
+rename project folder. add project to start of the name i.e folder => projectfolder or projectnandiasgarden for this project
+
+this helps differentiate between the project folder and the autogenerate folder (with the identaical project name) that lives in the project folder
+
+# - rename project folder
