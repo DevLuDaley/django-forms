@@ -26,13 +26,12 @@ source env_pizza/bin/activate
 
 ▶
 git pull
-\$ - do this so that local git knows about the new branch ('django-setup') created in remote git/GitHub
-▶
-git checkout setup_django
-▶
-pip install django
 
-\$
+- do this so that local git knows about the new branch ('django-setup') created in remote git/GitHub
+  ▶
+  git checkout setup_django
+  ▶
+  pip install django
 
 # - install django
 
@@ -48,8 +47,38 @@ this helps differentiate between the project folder and the autogenerate folder 
 
 # - rename project folder to projectnandiasgarden
 
-▶ django-admin startapp pizza
+▶
+django-admin startapp pizza
 
 # - create app pizza
 
-.
+- on Github, create new remote branch => setup_frontend
+
+▶
+git checkout setup_frontend
+
+# - git checkout setup_frontend
+
+- urls.py =>
+
+  - ['from pizza import views']
+
+    add paths for home & order
+    [path('', views.home, name='home')
+    path('order', views.order, name='order'),]
+
+- next we need to let settings know that this app exists and add paths for home & order to views.py
+
+- settings.py =>
+
+  - add ['pizza'] to [installed_apps]
+  - update timezone variable to ['est']
+
+- inside of pizza folder create paths and files
+  [/templates/pizza/home.html][/templates/pizza/order.html]
+
+# - update urls & settings & views.py
+
+- debugged 2 errors
+  - 1st - views.py => forgot to wrap url in ''
+  - 2nd urls.py => forgot to add order to path instead of just "" aka empty string
