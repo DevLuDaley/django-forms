@@ -208,4 +208,17 @@ register 2 new models (Pizza, Size)
 - [admin.site.register(Pizza)]
 - [admin.site.register(Size)]
 
-# - setup models =>
+# - models.py && admin.py => create 2 models && register new models - Pizza/Size
+
+▶
+cd projectnandiasgarden
+▶
+python manage.py makemigrations
+▶
+python manage.py migrate
+
+# - migrate models to db =>
+
+# - blank.py =>
+
+▶
