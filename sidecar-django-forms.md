@@ -232,6 +232,10 @@ Superuser created successfully.
 
 current place = chapter2 video3 'working with wigets'
 
+python now points to env_pizza via the bottom left hand corner.
+
+# - blank.py =>
+
 # - customize using wigets blank.py =>
 
 # - blank.py =>
