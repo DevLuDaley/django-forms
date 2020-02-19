@@ -191,3 +191,21 @@ order.html =>
 - add .capitalize() to topping1 & topping2
 
 # - views.order() => add logic to validate data as cleaned_data + {{note}} for succesful order placed
+
+models.py =>
+
+- create Size and Pizza classes
+- use **str**(self) to display title of models in form and admin panel.
+
+- Size uses Foreign Key and must cascade
+
+CASCADE = if one thing is deleted we will also delete the object that has that relationship (? research this more)
+
+admin.py
+import Pizza, Size
+register 2 new models (Pizza, Size)
+
+- [admin.site.register(Pizza)]
+- [admin.site.register(Size)]
+
+# - setup models =>
