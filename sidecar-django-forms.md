@@ -95,3 +95,8 @@ git checkout setup_frontend
   - 1 option field (3 options small, medium, large)
 
 # - order.html => add fields for toppings and size choices
+
+- order.html =>
+  - add submit button
+
+# - order.html => add order button
