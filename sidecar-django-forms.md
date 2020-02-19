@@ -219,6 +219,13 @@ python manage.py migrate
 
 # - migrate models to db =>
 
+▶
+python manage.py createsuperuser
+Username (leave blank to use 'lhd'): admin_django_forms
+Email address: daleyluis@gmai.com
+password
+Superuser created successfully.
+
 # - blank.py =>
 
 ▶
