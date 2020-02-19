@@ -79,6 +79,19 @@ git checkout setup_frontend
 
 # - update urls & settings & views.py
 
-- debugged 2 errors
-  - 1st - views.py => forgot to wrap url in ''
-  - 2nd urls.py => forgot to add order to path instead of just "" aka empty string
+- home.html
+  - add title and href to order page
+- order.html
+  - add title and href to home page
+
+* debugged 2 errors
+  - 1st - views.py =>
+    - forgot to wrap url in ''
+  - 2nd - urls.py =>
+    - forgot to add order to path instead of just "" aka empty string
+
+- order.html =>
+  - add 2 topping fields
+  - 1 option field (3 options small, medium, large)
+
+# - order.html => add fields for toppings and size choices
