@@ -100,3 +100,6 @@ git checkout setup_frontend
   - add submit button
 
 # - order.html => add order button
+
+- order.html =>
+  - update form action to point to 'order' page with a 'get' method
