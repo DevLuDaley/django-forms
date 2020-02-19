@@ -51,3 +51,5 @@ this helps differentiate between the project folder and the autogenerate folder 
 ▶ django-admin startapp pizza
 
 # - create app pizza
+
+.
