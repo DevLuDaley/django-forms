@@ -226,6 +226,10 @@ Email address: daleyluis@gmai.com
 password
 Superuser created successfully.
 
+# - create superuser =>
+
+# - refactor: from form to django ModelForm + update spacing in topping labels
+
 # - blank.py =>
 
 ▶
