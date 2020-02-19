@@ -179,3 +179,15 @@ order.html =>
   git checkout setup_data
 
 # - git checkout setup_data
+
+add logic for POST
+
+order.html =>
+
+- add <h2>{{ note }}</h2>
+- change [form] to [new_form] 2 instances so do this twice
+- declare [new_form=""] before calling it
+- declare [note=""] before calling it
+- add .capitalize() to topping1 & topping2
+
+# - views.order() => add logic to validate data as cleaned_data + {{note}} for succesful order placed
