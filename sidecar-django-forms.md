@@ -103,3 +103,23 @@ git checkout setup_frontend
 
 - order.html =>
   - update form action to point to 'order' page with a 'get' method
+
+before hitting "order pizza" button http://127.0.0.1:8000/order?toping1=&toping2=&size=Small
+after hitting "order pizza" button http://127.0.0.1:8000/order?toping1=Cheese&toping2=Pepperoni&size=Medium
+
+'get' method displays and passes along info from the page
+when should we use a 'get' method?
+--whenever not changing anything on a website or you want something to be able to be referenced later.
+
+we'll use a POST method instead...we only set up a 'get' initially as a test to see the data being passed.
+
+error when hitting submit with 'post' instead of 'get'
+[----Reason given for failure:
+
+    CSRF token missing or incorrect.]
+
+- order.html =>
+  - add {% csrf_token %}
+  - refresh the page and renter info
+
+# - order.html => change 'get' to 'post' + add {% csrf_token %}
