@@ -222,13 +222,17 @@ python manage.py migrate
 ▶
 python manage.py createsuperuser
 Username (leave blank to use 'lhd'): admin_django_forms
-Email address: daleyluis@gmai.com
+Email address:
 password
 Superuser created successfully.
 
 # - create superuser =>
 
 # - refactor: from form to django ModelForm + update spacing in topping labels
+
+current place = chapter2 video3 'working with wigets'
+
+# - customize using wigets blank.py =>
 
 # - blank.py =>
 
