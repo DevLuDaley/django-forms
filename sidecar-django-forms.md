@@ -123,3 +123,53 @@ error when hitting submit with 'post' instead of 'get'
   - refresh the page and renter info
 
 # - order.html => change 'get' to 'post' + add {% csrf_token %}
+
+- forms.py =>
+
+  - create [forms.py] inside the Pizza folder
+  - create the [PizzaForm] class and add all 3 fields for toppings and size
+
+- views.py =>
+  [from .forms import PizzaForm]
+  edit order method
+
+before =>
+def order(request):
+return render(request, 'pizza/order.html')
+
+after =>
+
+          def order(request):
+            form = PizzaForm()
+            return render(request, 'pizza/order.html', {'pizzaform':forms})
+
+order.html =>
+
+[remove] =>
+<label for="topping1">Topping 1: </label>
+<input id="topping" type="text" name="toping1">
+
+        <label for="topping2">Topping 2: </label>
+        <input id="topping" type="text" name="toping2">
+
+        <label for="size">Size: </label>
+        <select id="size" name="size">
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+        </select>
+
+[leave] =>
+
+  <h1>Order a Pizza</h1>
+  <form action="{% url 'order' %}" method="post">
+      {% csrf_token %}
+
+      <input type="submit" value="Order Pizza">
+
+  </form>
+  <a href="{% url 'home' %}">return to homepage</a>
+
+    - add {{ pizzaform }}
+
+# - create forms.py + PizzaForm & update views.py and order.html
