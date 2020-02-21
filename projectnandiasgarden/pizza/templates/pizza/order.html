@@ -1,6 +1,6 @@
 <h1>Order a Pizza</h1>
 
-<form>
+<form action="{% url 'order' %}" method="get">
     <label for="topping1">Topping 1: </label>
     <input id="topping1" type="text" name="topping1">
 
@@ -13,6 +13,7 @@
         <option value="Medim">Medium</option>
         <option value="Large">Large</option>
     </select>
+    <input type="submit" value="Order Pizza">
 </form>
 
 <a href="{% url 'home' %}">Return to home page</a>

@@ -244,10 +244,29 @@ order.html =>
 <a href="{% url 'home' %}">Return to home page</a> 
 ```
 
-# 9. order.html => add order button
+# 9. order.html => add 'submit' (order) button
 
-- order.html =>
-  - add submit button
+```
+order.html =>
+  - add submit (order) button
+  - add 'action' to form meta tag
+  - method = post
+  - add csrf token
+```
+
+```html
+order.html =>
+
+<form action="{% url 'order' %}" method="post">
+    {% csrf_token %}
+
+    ...
+
+     <input type="submit" value="Order Pizza">
+</form>
+```
+
+
 
 # 10. order.html => change 'get' to 'post' + add {% csrf_token %}
 
