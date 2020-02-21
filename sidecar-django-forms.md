@@ -199,8 +199,6 @@ in terminal =>
     checkout to new branch
 ```
 
-`git checkout 4_setup_data`
-
 # 8. order.html => add fields for toppings and size choices
 
 ```
@@ -379,12 +377,16 @@ order.html =>
 
 ```
 
+```
+github =>
+create [setup_data] branch
+```
 
-# 12. git checkout setup_data
+`git pull`
+`git checkout 4_setup_data`
 
-- create [setup_data] branch
-  ▶
-  git checkout setup_data
+# 12. git checkout 4_setup_data
+
 
 # 13. views.order() => add logic to validate data as cleaned_data + {{note}} for succesful order placed
 
