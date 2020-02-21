@@ -142,6 +142,15 @@ create templates/pizza/ path inside of pizza app
 create home.html and order.html inside of templates folder
 ```
 
+```
+home.html =>
+  add title and href to order page
+
+order.html =>
+  add title and href to home page
+
+```
+
 ```html
 home.html =>
 
@@ -176,29 +185,64 @@ Installing collected packages: pycodestyle, autopep8
 Successfully installed autopep8-1.5 pycodestyle-2.5.0`
 
 ```
-    confirm
+confirm
     1. home and order pages are loading as expected.
     2. the url link on each page is working.
 ```
 
-git checkout
+```
+on Github =>
+    clone branch 3_setup_frontend
+    create new branch 4_setup_data
+
+in terminal =>
+    checkout to new branch
+```
+
+`git checkout 4_setup_data`
 
 # 8. order.html => add fields for toppings and size choices
 
-- home.html
-  - add title and href to order page
-- order.html
-  - add title and href to home page
+```
+debugged 2 errors in 2 files
 
-* debugged 2 errors
-  - 1st - views.py =>
-    - forgot to wrap url in ''
-  - 2nd - urls.py =>
-    - forgot to add order to path instead of just "" aka empty string
+  views.py =>
+   1st -
+    forgot to wrap url in ''
 
-- order.html =>
+   urls.py =>
+    2nd -
+     forgot to add 'order' to path instead of just "" aka empty string
+```
+
+```
+order.html =>
   - add 2 topping fields
-  - 1 option field (3 options small, medium, large)
+  - 1 option field (3 options [small, medium, large])
+```
+
+```html
+order.html =>
+
+<<h1>Order a Pizza</h1>
+
+<form>
+    <label for="topping1">Topping 1: </label>
+    <input id="topping1" type="text" name="topping1">
+
+    <label for="topping2">Topping 2: </label>
+    <input id="topping2" type="text" name="topping2">
+
+    <label for="size">Size: </label>
+    <select id="size" name="size">
+        <option value="Small">Small</option>
+        <option value="Medim">Medium</option>
+        <option value="Large">Large</option>
+    </select>
+</form>
+
+<a href="{% url 'home' %}">Return to home page</a> 
+```
 
 # 9. order.html => add order button
 
