@@ -1,7 +1,7 @@
 # 1. create and activate (env_pizza)
 
 ```
-create github repo titled => django-forms**
+create github repo titled => django-forms
 ```
 
 `git clone git@github.com:DevLuDaley/django-forms.git`
@@ -11,6 +11,16 @@ create github repo titled => django-forms**
 `python3 -m venv env_pizza`
 
 `source env_pizza/bin/activate`
+
+```
+access command palette
+```
+`cmd + shift + P`
+
+`select python interpreter`
+```
+select ['env_pizza':venv] environment
+```
 
 # 2. install django
 
@@ -425,8 +435,6 @@ def order(request):
 ```
 
 
-
-
 ```
 order.html =>
 
@@ -438,7 +446,8 @@ order.html =>
 ```
 
 ```html
-order.html
+order.html =>
+
 <h1>Order a Pizza</h1>
 
 <h2>{{ note }}</h2>
@@ -449,8 +458,9 @@ order.html
 ```
 
 
-# 14. models.py && admin.py => create 2 models && register new models - Pizza/Size
+# 14. create && register 2 models [Pizza, Size]
 
+```
 models.py =>
 
 - create Size and Pizza classes
@@ -459,39 +469,79 @@ models.py =>
 - Size uses Foreign Key and must cascade
 
 CASCADE = if one thing is deleted we will also delete the object that has that relationship (? research this more)
+```
 
-admin.py
+```python
+models.py =>
+
+from django.db import models
+
+
+class Size(models.Model):
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
+
+
+class Pizza(models.Model):
+    topping1 = models.CharField(max_length=100)
+    topping2 = models.CharField(max_length=100)
+    size = models.ForeignKey(Size, on_delete=models.CASCADE)
+
+```
+
+```
+admin.py =>
+
 import Pizza, Size
 register 2 new models (Pizza, Size)
 
 - [admin.site.register(Pizza)]
 - [admin.site.register(Size)]
+```
+
+```python
+admin.py =>
+
+from django.contrib import admin
+from .models import Pizza, Size
+
+admin.site.register(Pizza)
+admin.site.register(Size)
+```
+
+
 
 # 15. migrate models to db =>
 
-▶
-cd projectnandiasgarden
-▶
-python manage.py makemigrations
-▶
-python manage.py migrate
+
+`cd projectnandiasgarden`
+
+`python manage.py makemigrations`
+
+`python manage.py migrate`
 
 # 16. create superuser =>
 
-▶
-python manage.py createsuperuser
+
+`python manage.py createsuperuser`
+```
 Username (leave blank to use 'lhd'): admin_django_forms
 Email address:
 password
 Superuser created successfully.
+```
 
 # 17 # - refactor: from form to django ModelForm + update spacing in topping labels
 
 # 18 - refactor: from form to django ModelForm + update spacing in topping labels
 
-current place = chapter2 video3 'working with wigets'
+`current place = `
 
-python now points to env_pizza via the bottom left hand corner.
+`chapter2 video3 'working with wigets'`
+
+`python now points to env_pizza via the bottom left hand corner.`
 
 # - blank.py =>
 
