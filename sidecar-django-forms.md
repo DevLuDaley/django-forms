@@ -383,6 +383,7 @@ create [setup_data] branch
 ```
 
 `git pull`
+
 `git checkout 4_setup_data`
 
 # 12. git checkout 4_setup_data
@@ -390,8 +391,43 @@ create [setup_data] branch
 
 # 13. views.order() => add logic to validate data as cleaned_data + {{note}} for succesful order placed
 
+```
+views.py =>
 add logic for POST
+```
 
+```python 
+views.py =>
+
+from django.shortcuts import render
+from .forms import PizzaForm
+
+
+def home(request):
+    return render(request, 'pizza/home.html')
+
+
+def order(request):
+    if request.method == 'POST':
+        filled_form = PizzaForm(request.POST)
+        if filled_form.is_valid():
+            note = 'Thanks for ordering! Your %s %s and %s pizza is on its way!' % (
+                filled_form.cleaned_data['size'],
+                filled_form.cleaned_data['topping1'].capitalize(),
+                filled_form.cleaned_data['topping2'].capitalize(),)
+        else:
+            note = 'Order was not created, please try again'
+        new_form = PizzaForm()
+        return render(request, 'pizza/order.html', {'pizzaform': new_form, 'note': note})
+    else:
+        form = PizzaForm()
+        return render(request, 'pizza/order.html', {'pizzaform': form})
+```
+
+
+
+
+```
 order.html =>
 
 - add <h2>{{ note }}</h2>
@@ -399,6 +435,19 @@ order.html =>
 - declare [new_form=""] before calling it
 - declare [note=""] before calling it
 - add .capitalize() to topping1 & topping2
+```
+
+```html
+order.html
+<h1>Order a Pizza</h1>
+
+<h2>{{ note }}</h2>
+
+<form action="{% url 'order' %}" method="post">
+    {% csrf_token %} {{ pizzaform }}
+...
+```
+
 
 # 14. models.py && admin.py => create 2 models && register new models - Pizza/Size
 
