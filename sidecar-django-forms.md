@@ -546,11 +546,22 @@ Superuser created successfully.
 - login as superuser at http://127.0.0.1:8000/admin
 - create 3 new sizes "Small" "Medium" "Large"
 ```
+```
+Github =>
+
+- create new remote branch => 
+    5_setup_form_refactor
+
+```
+
+`git checkout 5_setup_form_refactor`
 
 
-# 17 # - refactor: from form to django ModelForm + update spacing in topping labels
+# 17 # - `git checkout 5_setup_form_refactor`
 
-# 18 - 
+# 18 # - refactor: from form to django ModelForm + update spacing in topping labels
+
+# 19 - 
 
 `current place = `
 
