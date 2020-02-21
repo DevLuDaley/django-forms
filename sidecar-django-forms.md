@@ -513,8 +513,7 @@ admin.site.register(Size)
 
 
 
-# 15. migrate models to db =>
-
+# 15. migrate models to db
 
 `cd projectnandiasgarden`
 
@@ -522,20 +521,36 @@ admin.site.register(Size)
 
 `python manage.py migrate`
 
-# 16. create superuser =>
+# 16. create superuser
 
-
-`python manage.py createsuperuser`
 ```
-Username (leave blank to use 'lhd'): admin_django_forms
+create superuser profile for login to django admin site. 
+```
+`python manage.py createsuperuser`
+
+```
+terminal output =>
+
+Username
+        (leave blank to use 'lhd'): 
+        admin_django_forms
 Email address:
+
 password
+
 Superuser created successfully.
 ```
+```
+[localhost](http://127.0.0.1:8000/)/admin =>
+
+- login as superuser at http://127.0.0.1:8000/admin
+- create 3 new sizes "Small" "Medium" "Large"
+```
+
 
 # 17 # - refactor: from form to django ModelForm + update spacing in topping labels
 
-# 18 - refactor: from form to django ModelForm + update spacing in topping labels
+# 18 - 
 
 `current place = `
 
