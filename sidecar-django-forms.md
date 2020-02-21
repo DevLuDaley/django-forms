@@ -311,53 +311,74 @@ order.html =>
 
 # 11. create forms.py + PizzaForm & update views.py and order.html
 
-- forms.py =>
+```
+forms.py =>
 
   - create [forms.py] inside the Pizza folder
+  - import forms
   - create the [PizzaForm] class and add all 3 fields for toppings and size
 
 - views.py =>
   [from .forms import PizzaForm]
   edit order method
+```
 
-before =>
+```python
+forms.py =>
+
+from django import forms
+
+
+class PizzaForm(forms.Form):
+    topping1 = forms.CharField(label='Topping 1', max_length=100)
+    topping2 = forms.CharField(label='Topping 2', max_length=100)
+    size = forms.ChoiceField(label='Size', choices=[(
+        'Small', 'Small'), ('Medium', 'Medium'), ('Large', 'Large')])
+
+```
+
+```
+views.py =>
+  [from .forms import PizzaForm]
+  edit order method
+```
+
+```python
+views.py =>
+
+from django.shortcuts import render
+from .forms import PizzaForm
+
+
+def home(request):
+    return render(request, 'pizza/home.html')
+
+
 def order(request):
-return render(request, 'pizza/order.html')
+    form = PizzaForm()
+    return render(request, 'pizza/order.html', {'pizzaform': form})
+```
 
-after =>
+```
+order.html =>
+remove or comment out labels/input fields
+```
 
-          def order(request):
-            form = PizzaForm()
-            return render(request, 'pizza/order.html', {'pizzaform':forms})
-
+```html
 order.html =>
 
-[remove] =>
-<label for="topping1">Topping 1: </label>
-<input id="topping" type="text" name="toping1">
+<h1>Order a Pizza</h1>
 
-        <label for="topping2">Topping 2: </label>
-        <input id="topping" type="text" name="toping2">
+<form action="{% url 'order' %}" method="post">
+    {% csrf_token %} {{ pizzaform }}
 
-        <label for="size">Size: </label>
-        <select id="size" name="size">
-            <option value="Small">Small</option>
-            <option value="Medium">Medium</option>
-            <option value="Large">Large</option>
-        </select>
+    <input type="submit" value="Order Pizza">
+</form>
 
-[leave] =>
+<a href="{% url 'home' %}">Return to home page</a>
 
-  <h1>Order a Pizza</h1>
-  <form action="{% url 'order' %}" method="post">
-      {% csrf_token %}
+```
 
-      <input type="submit" value="Order Pizza">
-
-  </form>
-  <a href="{% url 'home' %}">return to homepage</a>
-
-    - add {{ pizzaform }}
 
 # 12. git checkout setup_data
 
