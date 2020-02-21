@@ -1,10 +1,8 @@
-
-
----
-
 # 1. create and activate (env_pizza)
 
-### create github repo titled => django-forms
+```
+create github repo titled => django-forms**
+```
 
 `git clone git@github.com:DevLuDaley/django-forms.git`
 
@@ -16,9 +14,14 @@
 
 # 2. install django
 
-### clone master branch to create 'django-setup' branch
+```
+clone master branch to create 'django-setup' branch
 
-### note: pull the latest version of the master project from the remote repo so that local git knows about the new branch ('django-setup') created in remote git/GitHub
+note: 
+  if you get an error pull the latest version of the master project from the remote repo.
+  
+  Now the local git knows about the new branch ('django-setup') created in remote git/GitHub
+```
 
 `git pull`
 
@@ -34,11 +37,11 @@
 
 `mv nandiasgarden/ projectnandiasgarden`
 
-the tutorial says nandiasgarden-project but "name-project" is an invalid proj name in py 3.8
+- the tutorial says nandiasgarden-project but "name-project" produces an error in py 3.8**
 
-rename project folder. add project to start of the name i.e folder => projectfolder or projectnandiasgarden for this project
+- rename project folder. add project to start of the name i.e folder => projectfolder or projectnandiasgarden for this project
 
-this helps differentiate between the project folder and the autogenerate folder (with the identaical project name) that lives in the project folder
+- this helps differentiate between the project folder and the autogenerate folder (with the identaical project name) that lives in the project folder
 
 open projectnandiasgarden
 
@@ -52,30 +55,133 @@ open projectnandiasgarden
 
 # 6. git checkout setup_frontend
 
-- on Github, create new remote branch => setup_frontend
+```
+on Github, create new remote branch => setup_frontend
+```
 
-▶
-git checkout setup_frontend
+`git checkout setup_frontend`
 
 # 7. update urls & settings & views.py
 
-- urls.py =>
+```
+urls.py =>
+    import views
+    add url paths (home & order)
+```
 
-  - ['from pizza import views']
+```python
+urls.py =>
 
-    add paths for home & order
-    [path('', views.home, name='home')
-    path('order', views.order, name='order'),]
+from django.contrib import admin
+from django.urls import path
+from pizza import views
 
-- next we need to let settings know that this app exists and add paths for home & order to views.py
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.home, name='home'),
+    path('order', views.order, name='order'),
 
-- settings.py =>
+]
+```
 
-  - add ['pizza'] to [installed_apps]
-  - update timezone variable to ['est']
+```
+next we need to let settings.py know that this app exists
+and add paths for home & order to views.py
+```
 
-- inside of pizza folder create paths and files
-  [/templates/pizza/home.html][/templates/pizza/order.html]
+```
+settings.py =>
+
+  add ['pizza'] to [installed_apps]
+  update timezone variable to ['est']
+```
+
+```python
+settings.py =>
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'pizza',
+]
+
+...
+
+TIME_ZONE = 'EST'
+```
+
+```
+IMAGE
+views.py =>
+
+![create-html-directory](/Users/LHD/Development/code/practice/practice-python/images/create-html-directory)
+    create paths for home
+    create paths for order
+```
+
+
+```python
+views.py =>
+
+from django.shortcuts import render
+
+
+def home(request):
+    return render(request, 'pizza/home.html')
+
+def order(request):
+    return render(request, 'pizza/order.html')
+```
+
+```
+create templates/pizza/ path inside of pizza app
+create home.html and order.html inside of templates folder
+```
+
+```html
+home.html =>
+
+<h1>Nandia's Garden</h1>
+<a href="{% url 'order' %}">Order a Pizza</a>
+```
+
+```html
+order.html=>
+
+<h1>Order a Pizza</h1>
+<a href="{% url 'home' %}">Return to home page</a>
+```
+
+```
+prompted by vs code to install autopep8
+install autopep8
+```
+
+`
+/Users/LHD/Development/code/practice/practice-python/django-forms/env_pizza/bin/python -m pip install -U autopep8
+`
+
+
+`Collecting autopep8
+  Downloading https://files.pythonhosted.org/packages/12/55/7b07585ca0c30e5b216e4d627f82f96f1a7e82d2dd727b1f926cb3f3d58b/autopep8-1.5.tar.gz (116kB)
+     |████████████████████████████████| 122kB 4.3MB/s 
+Collecting pycodestyle>=2.5.0 (from autopep8)
+  Using cached https://files.pythonhosted.org/packages/0e/0c/04a353e104d2f324f8ee5f4b32012618c1c86dd79e52a433b64fceed511b/pycodestyle-2.5.0-py2.py3-none-any.whl
+Installing collected packages: pycodestyle, autopep8
+  Running setup.py install for autopep8 ... done
+Successfully installed autopep8-1.5 pycodestyle-2.5.0`
+
+```
+    confirm
+    1. home and order pages are loading as expected.
+    2. the url link on each page is working.
+```
+
+git checkout
 
 # 8. order.html => add fields for toppings and size choices
 
