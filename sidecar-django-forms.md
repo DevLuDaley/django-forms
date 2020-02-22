@@ -403,7 +403,13 @@ create [setup_data] branch
 
 ```
 views.py =>
-add logic for POST
+
+- setup conditional for POST method
+- add <h2>{{ note }}</h2>
+- change [form] to [new_form] 2 instances so do this twice
+- declare [new_form=""] before calling it
+- declare [note=""] before calling it
+- add .capitalize() to topping1 & topping2
 ```
 
 ```python 
@@ -422,9 +428,9 @@ def order(request):
         filled_form = PizzaForm(request.POST)
         if filled_form.is_valid():
             note = 'Thanks for ordering! Your %s %s and %s pizza is on its way!' % (
-                filled_form.cleaned_data['size'],
-                filled_form.cleaned_data['topping1'].capitalize(),
-                filled_form.cleaned_data['topping2'].capitalize(),)
+                filled_form.cleaned_data['size'], 
+                filled_form.cleaned_data['topping1'].capitalize(), 
+                filled_form.cleaned_data['topping2'].capitalize())
         else:
             note = 'Order was not created, please try again'
         new_form = PizzaForm()
@@ -438,11 +444,9 @@ def order(request):
 ```
 order.html =>
 
-- add <h2>{{ note }}</h2>
-- change [form] to [new_form] 2 instances so do this twice
-- declare [new_form=""] before calling it
-- declare [note=""] before calling it
-- add .capitalize() to topping1 & topping2
+-Give access to [note] variable.
+-
+
 ```
 
 ```html
@@ -553,15 +557,54 @@ Github =>
     5_setup_form_refactor
 
 ```
+`git pull`
 
 `git checkout 5_setup_form_refactor`
 
 
-# 17 # - `git checkout 5_setup_form_refactor`
+# 17. `git checkout 5_setup_form_refactor`
 
-# 18 # - refactor: from form to django ModelForm + update spacing in topping labels
+# 18. refactor: from form to django ModelForm + update spacing in topping labels
 
-# 19 - 
+```
+forms.py =>
+
+comment out the previous [PizzaForm] class from [forms.Form] in favor of [PizzaForm ][forms.ModelForm]
+```
+
+```python
+forms.py =>
+
+from django import forms
+from .models import Pizza
+
+"""
+class PizzaForm(forms.Form):
+    topping1 = forms.CharField(label='Topping 1', max_length=100)
+    topping2 = forms.CharField(label='Topping 2', max_length=100)
+    size = forms.ChoiceField(label='Size', choices=[(
+        'Small', 'Small'), ('Medium', 'Medium'), ('Large', 'Large')])
+
+"""
+class PizzaForm(forms.ModelForm):
+    class Meta:
+        model = Pizza
+        fields = ['topping1', 'topping2', 'size']
+        labels = {
+            "topping1": "Topping 1",
+            "topping2": "Topping 2",
+        }
+```
+```
+Github =>
+
+- create new remote branch => 
+    5_setup_form_refactor
+```
+`git pull`
+`git checkout 6_setup_widgets`
+
+# 19. git checkout 6_setup_widgets
 
 `current place = `
 

@@ -13,7 +13,7 @@ def order(request):
             note = 'Thanks for ordering! Your %s %s and %s pizza is on its way!' % (
                 filled_form.cleaned_data['size'],
                 filled_form.cleaned_data['topping1'].capitalize(),
-                filled_form.cleaned_data['topping2'].capitalize(),)
+                filled_form.cleaned_data['topping2'].capitalize())
         else:
             note = 'Order was not created, please try again'
         new_form = PizzaForm()
