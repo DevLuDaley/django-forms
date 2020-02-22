@@ -599,9 +599,10 @@ class PizzaForm(forms.ModelForm):
 Github =>
 
 - create new remote branch => 
-    5_setup_form_refactor
+    6_setup_widgets
 ```
 `git pull`
+
 `git checkout 6_setup_widgets`
 
 # 19. git checkout 6_setup_widgets
