@@ -562,7 +562,8 @@ Github =>
 `git checkout 5_setup_form_refactor`
 
 
-# 17. `git checkout 5_setup_form_refactor`
+# 17. git checkout 5_setup_form_refactor
+
 
 # 18. refactor: from form to django ModelForm + update spacing in topping labels
 
@@ -605,37 +606,18 @@ Github =>
 
 `git checkout 6_setup_widgets`
 
+
 # 19. git checkout 6_setup_widgets
+
+# 20. update sidecar
+
+# 21. customize using wigets
 
 `current place = `
 
-`chapter2 video3 'working with wigets'`
+`chapter #2 video #3`
+
+`'working with wigets'`
 
 `python now points to env_pizza via the bottom left hand corner.`
 
-# - blank.py =>
-
-# - customize using wigets blank.py =>
-
-# - blank.py =>
-
-▶
-
-
-
-# Syntax Key for sidecar-proj-name.md files:
-
-commit message =
-
-  '# commit_message'
-
-terminal input =
-
-▶
-
-`input`
-
-code block =
-```python
-codeblock
-```
