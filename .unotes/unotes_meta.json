@@ -1,0 +1,23 @@
+{
+  "name": "",
+  "isOrdered": true,
+  "folders": {
+    "env_pizza": {
+      "name": "env_pizza",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "projectnandiasgarden": {
+      "name": "projectnandiasgarden",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    }
+  },
+  "files": {
+    "sidecar-django-forms-old": 1,
+    "README": 2,
+    "sidecar-django-forms": 0
+  }
+}
