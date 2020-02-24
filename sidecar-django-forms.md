@@ -1176,8 +1176,359 @@ in order.html add novalidate
 to view then remove it
 
 <form action="{% url 'order' %}" method="post" novalidate>
+```
+`27. git checkout10_setup_forms_rendering_customizing`
+
+3 different ways of arranging our form
+
+before
+```html
+order.html
+
+<form action="{% url 'order' %}" method="post">
+    {% csrf_token %} {{ pizzaform }}
+
+    <input type="submit" value="Order Pizza">
+</form>
 
 ```
-`current place =`
-3:2
-`server-based errors`
+![](2020-02-24-16-10-36.png)
+
+```html
+order.html
+
+<form action="{% url 'order' %}" method="post">
+    {% csrf_token %} 
+    {{ pizzaform.as_p }}
+
+    <input type="submit" value="Order Pizza">
+</form>
+
+
+```
+
+ ![](2020-02-24-16-13-23.png)
+
+
+
+```html
+order.htl
+<form action="{% url 'order' %}" method="post">
+    {% csrf_token %}
+    <table>
+        {{ pizzaform.as_table }}
+    </table>
+
+    <input type="submit" value="Order Pizza">
+</form>
+
+```
+
+![](2020-02-24-16-16-25.png)
+
+
+```html
+order.html
+use <ul> instead of <table>
+
+
+<form action="{% url 'order' %}" method="post">
+    {% csrf_token %}
+    <ul>
+        {{ pizzaform.as_ul }}
+    </ul>
+
+    <input type="submit" value="Order Pizza">
+</form>
+```
+
+![](2020-02-24-16-19-53.png)
+
+
+
+```html
+order.py
+using PizzaForm to rearrange form display then return to it's orignal state/erase code you just added. yes, erase it homie.
+
+<form action="{% url 'order' %}" method="post">
+    {% csrf_token %}
+    {{ pizzaform.topping1.label_tag }}
+    {{ pizzaform.topping1 }}
+    {{ pizzaform.topping1.errors }}
+
+    {{ pizzaform.topping2.label_tag }}
+    {{ pizzaform.topping2 }}
+    {{ pizzaform.topping2.errors }}
+
+    <label for="{{ pizzaform.size.id_for_label }}">Size</label>
+    {{ pizzaform.size}}
+    {{ pizzaform.size.errors }}
+    <input type="submit" value="Order Pizza">
+</form>
+
+
+```
+
+![](2020-02-24-16-36-33.png)
+
+
+
+`pip install django-widget-tweaks`
+
+settings.py add
+widget_tweaks to installed apps = []
+
+```py
+settings.py
+
+# Application definition
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'pizza',
+    'widget_tweaks',
+]
+```
+
+```
+order.html
+add
+then add form-control & container
+
+<body>
+    {% load widget_tweaks %}
+```
+
+
+
+```html
+base.html
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Nandia's Garden!</title>
+</head>
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #238a44">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">Nandia's Garden</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'order' %}">Order Pizza</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<body>
+    {% block 'body' %}
+    {% endblock %}
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>
+
+
+```
+
+```html
+order.html
+embedded inside bootstrap
++ using widget_tweaks
++extending base
+
+{% extends 'pizza/base.html' %}
+{% block 'body' %}
+{% load widget_tweaks %}
+
+<div class="container">
+
+    <h1>Order a Pizza</h1>
+
+    <h2>{{ note }}</h2>
+    {% if created_pizza_pk %}
+    <h2><a href="{% url 'edit_order' created_pizza_pk %}">
+            Edit Your Order</a></h2>
+    {% endif %}
+
+
+    <form action="{% url 'order' %}" method="post">
+        {% csrf_token %}
+        {% for field in pizzaform %}
+        <div class="form-group">
+            {{ field.errors }}
+            {{ field.label_tag }}
+            {% render_field field class="form-control"%}
+        </div>
+
+        {% endfor %}
+
+        <input type="submit" value="Order Pizza">
+    </form>
+
+    <br>
+    <br> Want more than one pizza?
+    <form action="{% url 'pizzas' %}" method="get">
+        {% csrf_token %} {{ multiple_form}}
+        <input type="submit" value="Get Pizzas">
+    </form>
+    <br><br>
+    <a href="{% url 'home' %}">Return to home page</a>
+</div>
+
+{% endblock %}
+```
+
+
+
+
+
+![](2020-02-24-17-22-09.png)
+
+
+time to update home and edit page so that all pages inherit/extend base.htm;
+
+```py
+settings.py
+add
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+```
+----
+```
+search for and add nandiasgarden.jpg
+to new directory (must create) [static] inside of pizza app
+```
+
+`python manage.py collectstatic `
+confirm a new static folder has been created inside of [nandiasgarden] folder  addition to the one we created inside of the [pizza app]
+
+```html
+home.html
+
+
+{% extends 'pizza/base.html' %}
+{% block 'body' %}
+
+<div class="text-center">
+    {% load static %}
+    <img src="{% static 'nandiasgarden.jpg' %}" class="img-fluid" alt="Nandias Garden">
+</div>
+{% endblock %}
+
+```
+![](2020-02-24-17-40-06.png)
+
+now we update pizzas.html
+
+
+
+
+```html
+edit_orders.html
+
+
+{% extends 'pizza/base.html' %}
+{% block 'body' %}
+<div class="container">
+
+    <h1>Edit Pizza</h1>
+
+    <h2> {{ note }} </h2>
+
+
+    <form action="{% url 'edit_order' pizza.id %}" method="post">
+        {% csrf_token %}
+
+        {{ pizzaform }}
+
+        <input type="submit" value="Update Pizza">
+    </form>
+
+    <a href="{% url 'home' %}">Return to home page</a>
+
+</div>
+{% endblock %}
+```
+![](2020-02-24-17-51-12.png)
+
+```html
+pizzas.html
+
+{% extends 'pizza/base.html' %}
+{% block 'body' %}
+<div class="container">
+
+    <h1>Order a Pizzas</h1>
+    <h2>{{ note }}</h2>
+
+
+    <form action="{% url 'pizzas' %}" method="post">
+        {% csrf_token %}
+
+        {{ formset.management_form }}
+
+        {% for form in formset %}
+
+        {{ form }}
+        <br>
+        <br>
+        {% endfor %}
+
+        <input type="submit" value="Order Pizzas">
+    </form>
+</div>
+{% endblock %}
+```
+![](2020-02-24-17-53-01.png)
+
+
+
+
+
+```json
+
+current place =
+3:4
+server-based errors
+form-rendering
+```
+
+
+next
+
+html & css: Creating forms
+Deploying django Apps: Make Your Site go Live
+Test Driven Development in Django
+Building a Paid memebership site with Django
+
+linkedin Nickwalter
+
+![](2020-02-24-18-00-39.png)
