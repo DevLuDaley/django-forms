@@ -703,7 +703,7 @@ create new branch named '7_setup_forms_and_files'
 
 `git checkout setup_forms_and_files`
 
-22. git checkout_7_forms_and_files
+# 22. git checkout_7_forms_and_files
 
 
 accepting files using forms
@@ -770,6 +770,10 @@ def order(request):
 
 
 ```
+
+`git checkout 8_setup_formsets`
+
+# 23. git checkout 8_setup_formsets
 
 `current place =`
 
