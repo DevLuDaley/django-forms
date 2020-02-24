@@ -913,14 +913,148 @@ create pizzas/html
 
 add
 `   filled_form.save()`
+to views.py in the [order] method
 
-to views.py inder the [order] method
+add url for editing orders
+```py
+
+"""nandiasgarden URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/2.2/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path
+from pizza import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.home, name='home'),
+    path('order', views.order, name='order'),
+    path('pizzas', views.pizzas, name='pizzas'),
+    path('order/<int:pk>', views.edit_order, name='edit_order'),
+]
+
+```
+create new function
+
 
 
 ```py
 
+from django.shortcuts import render
+from .forms import PizzaForm, MultiplePizzaForm
+from django.forms import formset_factory
+from .models import Pizza
+
+
+def home(request):
+    return render(request, 'pizza/home.html')
+
+
+def order(request):
+    multiple_form = MultiplePizzaForm()
+    if request.method == 'POST':
+        filled_form = PizzaForm(request.POST, request.FILES)
+        if filled_form.is_valid():
+            created_pizza = filled_form.save()
+            created_pizza_pk = created_pizza.id
+            note = 'Thanks for ordering! Your %s %s and %s pizza is on its way!' % (
+                filled_form.cleaned_data['size'],
+                filled_form.cleaned_data['topping1'].capitalize(),
+                filled_form.cleaned_data['topping2'].capitalize())
+        else:
+            note = 'Order was not created, please try again'
+        new_form = PizzaForm()
+        return render(request, 'pizza/order.html', {'created_pizza_pk': created_pizza_pk, 'pizzaform': new_form, 'note': note, 'multiple_form': multiple_form})
+    else:
+        form = PizzaForm()
+        return render(request, 'pizza/order.html', {'pizzaform': form, 'multiple_form': multiple_form})
+
+
+def pizzas(request):
+    number_of_pizzas = 2
+    filled_multiple_pizza_form = MultiplePizzaForm(request.GET)
+    if filled_multiple_pizza_form.is_valid():
+        number_of_pizzas = filled_multiple_pizza_form.cleaned_data['number']
+    PizzaFormSet = formset_factory(PizzaForm, extra=number_of_pizzas)
+    formset = PizzaFormSet()
+    if request.method == 'POST':
+        filled_formset = PizzaFormSet(request.POST)
+        if filled_formset.is_valid():
+            for form in filled_formset:
+                print(form.cleaned_data['topping1'])
+            note = 'Pizzas have been ordered!'
+        else:
+            note = 'order was not created buddy, please try again'
+        return render(request, 'pizza/pizzas.html', {'note': note, 'formset': formset})
+    else:
+        return render(request, 'pizza/pizzas.html', {'formset': formset})
+
+
+def edit_order(request, pk):
+    pizza = Pizza.objects.get(pk=pk)
+    form = PizzaForm(instance=pizza)
+    if request.method == 'POST':
+        filled_form = PizzaForm(request.POST, instance=pizza)
+        if filled_form.is_valid():
+            filled_form.save()
+            form = filled_form
+    return render(request, 'pizza/edit_order.html', {'pizzaform': form, 'pizza': pizza})
 
 ```
+
+
+```py
+add to views.py
+
+def edit_order(request, pk):
+    pizza = Pizza.objects.get(pk=pk)
+    form = PizzaForm(instance=pizza)
+    if request.method == 'POST':
+        filled_form = PizzaForm(request.POST, instance=pizza)
+        if filled_form.is_valid():
+            filled_form.save()
+            form = filled_form
+            note = 'Order has been updated.'
+            return render(request, 'pizza/edit_order.html', {'note': note, 'pizzaform': form, 'pizza': pizza})
+    return render(request, 'pizza/edit_order.html', {'pizzaform': form, 'pizza': pizza})
+```
+
+
+
+add note to edit_order.
+html
+```html
+edit_order.html
+
+<h1>Edit Pizza</h1>
+
+<h2> {{ note }} </h2>
+
+
+<form action="{% url 'edit_order' pizza.id %}" method="post">
+    {% csrf_token %}
+
+    {{ pizzaform }}
+
+    <input type="submit" value="Update Pizza">
+</form>
+
+<a href="{% url 'home' %}">Return to home page</a>
+
+```
+
 
 `current place =`
 
