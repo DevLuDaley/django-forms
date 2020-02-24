@@ -663,7 +663,7 @@ size = forms.ChoiceField(label='Size', choices=[(
 
 [image of pizza order page ] 
 
-````python 
+```python
 
 from django import forms
 from .models import Pizza
@@ -676,9 +676,9 @@ class PizzaForm(forms.Form):
         label='Size', choices=[(
             'Small', 'Small'), ('Medium', 'Medium'), ('Large', 'Large')])
 
-
 ```
-```python 
+
+```python
 forms.py
 class PizzaForm(forms.ModelForm):
     class Meta:
@@ -693,16 +693,84 @@ class PizzaForm(forms.ModelForm):
 
 ` size = forms.ModelChoiceField(queryset=Size.objects, empty_label=None, widget=forms.CheckboxSelectMultiple)`
 ```
-we use radio the select button for size because it only allows for one selection in the list of choices and we\'d rather only allow users to select 1 size.
+we use radio the select button for size because it only allows for one selection in the list of choices and we would rather only allow users to select 1 size.
 ```
 
 ` size = forms.ModelChoiceField(queryset=Size.objects, empty_label=None, widget=forms.RadioSelect)`
 
+github
+create new branch named '7_setup_forms_and_files'
+
+`git checkout setup_forms_and_files`
+
+22. git checkout_7_forms_and_files
+
+
+accepting files using forms
+add enctype to order.html
+
+```html
+ order. html
+
+<h1>Order a Pizza</h1>
+
+<h2>{{ note }}</h2>
+
+<form enctype="multipart/form-data" action="{% url 'order' %}" method="post">
+    {% csrf_token %} {{ pizzaform }}
+
+    <input type="submit" value="Order Pizza">
+</form>
+
+<a href="{% url 'home' %}">Return to home page</a>
+
+```
+install pillow to allow us to receive files.
+
+`pip install pillow`
+
+add ImageField to forms.py
+
+```python
+forms.py
+
+class PizzaForm(forms.ModelForm):
+    #size = forms.ModelChoiceField(queryset=Size.objects, empty_label=None, widget=forms.RadioSelect)
+
+    image = forms.ImageField()
+
+    class Meta:
+
+        model = Pizza
+        fields = ['topping1', 'topping2', 'size']
+        labels = {
+            "topping1": "Topping 1",
+            "topping2": "Topping 2",
+        }
+```
+
+upate views to include `request.FILES` eventhough it didn't work on my machine
+
+```python
+def order(request):
+    if request.method == 'POST':
+        filled_form = PizzaForm(request.POST, request.FILES)
+        if filled_form.is_valid():
+            note = 'Thanks for ordering! Your %s %s and %s pizza is on its way!' % (
+                filled_form.cleaned_data['size'],
+                filled_form.cleaned_data['topping1'].capitalize(),
+                filled_form.cleaned_data['topping2'].capitalize())
+        else:
+            note = 'Order was not created, please try again'
+        new_form = PizzaForm()
+        return render(request, 'pizza/order.html', {'pizzaform': new_form, 'note': note})
+    else:
+        form = PizzaForm()
+        return render(request, 'pizza/order.html', {'pizzaform': form})
+
+
+```
 
 `current place =`
 
-`chapter #2 video #3`
-
-`'working with wigets'`
-
-`python now points to env_pizza via the bottom left hand corner.`
+`forms and files`
