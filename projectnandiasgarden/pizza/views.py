@@ -19,10 +19,12 @@ def order(request):
                 filled_form.cleaned_data['size'],
                 filled_form.cleaned_data['topping1'].capitalize(),
                 filled_form.cleaned_data['topping2'].capitalize())
+            filled_form = PizzaForm()
         else:
-            note = 'Order was not created, please try again'
-        new_form = PizzaForm()
-        return render(request, 'pizza/order.html', {'created_pizza_pk': created_pizza_pk, 'pizzaform': new_form, 'note': note, 'multiple_form': multiple_form})
+            created_pizza_pk = None
+            note = 'Order was not created, please try again.'
+
+        return render(request, 'pizza/order.html', {'created_pizza_pk': created_pizza_pk, 'pizzaform': filled_form, 'note': note, 'multiple_form': multiple_form})
     else:
         form = PizzaForm()
         return render(request, 'pizza/order.html', {'pizzaform': form, 'multiple_form': multiple_form})

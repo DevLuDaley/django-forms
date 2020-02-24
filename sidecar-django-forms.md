@@ -1013,7 +1013,7 @@ def edit_order(request, pk):
     return render(request, 'pizza/edit_order.html', {'pizzaform': form, 'pizza': pizza})
 
 ```
-
+`git checkout 9_setup_errors_local_vs_server_based`
 
 ```py
 add to views.py
@@ -1030,8 +1030,33 @@ def edit_order(request, pk):
             return render(request, 'pizza/edit_order.html', {'note': note, 'pizzaform': form, 'pizza': pizza})
     return render(request, 'pizza/edit_order.html', {'pizzaform': form, 'pizza': pizza})
 ```
+```py
+update views.py
 
 
+def order(request):
+    multiple_form = MultiplePizzaForm()
+    if request.method == 'POST':
+        filled_form = PizzaForm(request.POST, request.FILES)
+        if filled_form.is_valid():
+            created_pizza = filled_form.save()
+            created_pizza_pk = created_pizza.id
+            note = 'Thanks for ordering! Your %s %s and %s pizza is on its way!' % (
+                filled_form.cleaned_data['size'],
+                filled_form.cleaned_data['topping1'].capitalize(),
+                filled_form.cleaned_data['topping2'].capitalize())
+            filled_form = PizzaForm()
+        else:
+            created_pizza_pk = None
+            note = 'Order was not created, please try again.'
+
+        return render(request, 'pizza/order.html', {'created_pizza_pk': created_pizza_pk, 'pizzaform': filled_form, 'note': note, 'multiple_form': multiple_form})
+    else:
+        form = PizzaForm()
+        return render(request, 'pizza/order.html', {'pizzaform': form, 'multiple_form': multiple_form})
+
+
+```
 
 add note to edit_order.
 html
@@ -1056,12 +1081,103 @@ edit_order.html
 ```
 
 
-`git checkout 9_setup_errors_local_vs_server_based`
+
+
+```py
+forms.py
+if post request is not valid we need to return a message.
+
+```
 
 
 
 
 
+
+
+
+
+
+
+```py
+models.py
+before
+
+from django.db import models
+
+
+class Size(models.Model):
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
+
+
+class Pizza(models.Model):
+    topping1 = models.CharField(max_length=100)
+    topping2 = models.CharField(max_length=100)
+    size = models.ForeignKey(Size, on_delete=models.CASCADE)
+
+```
+![](2020-02-24-15-48-30.png)
+
+
+```py
+models.py
+after
+
+from django.db import models
+
+
+class Size(models.Model):
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
+
+
+class Pizza(models.Model):
+    topping1 = models.CharField(max_length=100)
+    topping2 = models.CharField(max_length=100)
+    size = models.ForeignKey(Size, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return (f'{self.size} {self.topping1.capitalize()} and {self.topping2.capitalize()} pizza')
+```
+
+![](2020-02-24-15-42-17.png)    
+
+```py
+views.py
+
+def order(request):
+    multiple_form = MultiplePizzaForm()
+    if request.method == 'POST':
+        filled_form = PizzaForm(request.POST, request.FILES)
+        if filled_form.is_valid():
+            created_pizza = filled_form.save()
+            created_pizza_pk = created_pizza.id
+            note = 'Thanks for ordering! Your %s %s and %s pizza is on its way!' % (
+                filled_form.cleaned_data['size'],
+                filled_form.cleaned_data['topping1'].capitalize(),
+                filled_form.cleaned_data['topping2'].capitalize())
+            filled_form = PizzaForm()
+        else:
+            created_pizza_pk = None
+            note = 'Order was not created, please try again'
+
+        return render(request, 'pizza/order.html', {'created_pizza_pk': created_pizza_pk, 'pizzaform': filled_form, 'note': note, 'multiple_form': multiple_form})
+    else:
+        form = PizzaForm()
+        return render(request, 'pizza/order.html', {'pizzaform': form, 'multiple_form': multiple_form})
+```
+```py
+in order.html add novalidate
+to view then remove it
+
+<form action="{% url 'order' %}" method="post" novalidate>
+
+```
 `current place =`
 3:2
 `server-based errors`
