@@ -775,6 +775,153 @@ def order(request):
 
 # 23. git checkout 8_setup_formsets
 
+add text and a submit box for more pizzas
+
+```python
+order.html
+
+<h1>Order a Pizza</h1>
+
+<h2>{{ note }}</h2>
+
+<form action="{% url 'order' %}" method="post">
+    {% csrf_token %} {{ pizzaform }}
+
+    <input type="submit" value="Order Pizza">
+</form>
+
+<br>
+<br> want more than one pizza?
+
+<form action="{% url 'pizzas' %}" method="get">
+    {{ multiple_form}}
+    <input type="submit" value="Get Pizzas">
+</form>
+
+<a href="{% url 'home' %}">Return to home page</a>
+```
+if we reload the page we get an error. that's because there is no path for pizzas, yet. Let's set one up
+
+```python
+urls.py
+
+from django.contrib import admin
+from django.urls import path
+from pizza import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.home, name='home'),
+    path('order', views.order, name='order'),
+    path('pizzas', views.pizzas, name='pizzas'),
+]
+```
+now we'll add a new class in forms.
+
+```py
+forms.py
+
+class MultiplePIzzaForm(forms.Form):
+    number = forms.IntegerField(min_value=2, max_value=6)
+```
+
+
+```py
+views.py
+
+from django.shortcuts import render
+from .forms import PizzaForm, MultiplePIzzaForm
+
+
+def home(request):
+    return render(request, 'pizza/home.html')
+
+
+def order(request):
+    multiple_form = MultiplePIzzaForm()
+    if request.method == 'POST':
+        filled_form = PizzaForm(request.POST, request.FILES)
+        if filled_form.is_valid():
+            note = 'Thanks for ordering! Your %s %s and %s pizza is on its way!' % (
+                filled_form.cleaned_data['size'],
+                filled_form.cleaned_data['topping1'].capitalize(),
+                filled_form.cleaned_data['topping2'].capitalize())
+        else:
+            note = 'Order was not created, please try again'
+        new_form = PizzaForm()
+        return render(request, 'pizza/order.html', {'pizzaform': new_form, 'note': note, 'multiple_form': multiple_form})
+    else:
+        form = PizzaForm()
+        return render(request, 'pizza/order.html', {'pizzaform': form, 'multiple_form': multiple_form})
+```
+
+create formet class and conditionals to handle post and else => get requests
+
+```py
+views.py
+
+from django.shortcuts import render
+from .forms import PizzaForm, MultiplePizzaForm
+from django.forms import formset_factory
+
+
+def home(request):
+    return render(request, 'pizza/home.html')
+
+
+def order(request):
+    multiple_form = MultiplePizzaForm()
+    if request.method == 'POST':
+        filled_form = PizzaForm(request.POST, request.FILES)
+        if filled_form.is_valid():
+            note = 'Thanks for ordering! Your %s %s and %s pizza is on its way!' % (
+                filled_form.cleaned_data['size'],
+                filled_form.cleaned_data['topping1'].capitalize(),
+                filled_form.cleaned_data['topping2'].capitalize())
+        else:
+            note = 'Order was not created, please try again'
+        new_form = PizzaForm()
+        return render(request, 'pizza/order.html', {'pizzaform': new_form, 'note': note, 'multiple_form': multiple_form})
+    else:
+        form = PizzaForm()
+        return render(request, 'pizza/order.html', {'pizzaform': form, 'multiple_form': multiple_form})
+
+
+def pizzas(request):
+    number_of_pizzas = 2
+    filled_multiple_pizza_form = MultiplePizzaForm(request.GET)
+    if filled_multiple_pizza_form.is_valid():
+        number_of_pizzas = filled_multiple_pizza_form.cleaned_data['number']
+    PizzaFormSet = formset_factory(PizzaForm, extra=number_of_pizzas)
+    formset = PizzaFormSet()
+    if request.method == 'POST':
+        filled_formset = PizzaFormSet(request.POST)
+        if filled_formset.is_valid():
+            for form in filled_formset:
+                print(form.cleaned_data['topping1'])
+            note = 'Pizzas have been ordered!'
+        else:
+            note = 'order was not created buddy, please try again'
+        return render(request, 'pizza/pizzas.html', {'note': note, 'formset': formset})
+    else:
+        return render(request, 'pizza/pizzas.html', {'formset': formset})
+
+```
+
+create pizzas/html
+
+
+add
+`   filled_form.save()`
+
+to views.py inder the [order] method
+
+
+```py
+
+
+```
+
 `current place =`
 
 `forms and files`

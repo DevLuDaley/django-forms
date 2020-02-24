@@ -8,4 +8,12 @@
     <input type="submit" value="Order Pizza">
 </form>
 
+<br>
+<br> want more than one pizza?
+
+<form action="{% url 'pizzas' %}" method="get">
+    {{ multiple_form}}
+    <input type="submit" value="Get Pizzas">
+</form>
+
 <a href="{% url 'home' %}">Return to home page</a>
